@@ -79,7 +79,7 @@ Responda APENAS com JSON válido, sem texto antes ou depois, sem blocos de códi
       },
       body: JSON.stringify({
        model: 'claude-haiku-4-5',
-        max_tokens: 1500,
+        max_tokens: 3000,
         messages: [{ role: 'user', content: prompt }]
       })
     });
