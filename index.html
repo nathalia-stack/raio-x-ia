@@ -483,7 +483,8 @@ function renderResult(r) {
   });
 
   document.getElementById('txt-diagnostico').textContent = r.diagnostico || '';
-  document.getElementById('txt-perguntas').textContent = r.perguntasSimuladas || '';
+  const p = r.perguntasSimuladas;
+document.getElementById('txt-perguntas').textContent = typeof p === 'string' ? p : JSON.stringify(p) || '';
   document.getElementById('txt-dominando').textContent = r.quemDomina || '';
   document.getElementById('txt-gaps').textContent = r.gaps || '';
 
