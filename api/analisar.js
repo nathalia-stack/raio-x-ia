@@ -59,7 +59,7 @@ Responda APENAS com JSON válido, sem texto antes ou depois, sem blocos de códi
   "scoreSub": "frase de impacto sobre o que isso significa",
   "dimensoes": { "autoridade": 12, "cobertura": 15, "posicionamento": 28 },
   "diagnostico": "2-3 frases diretas sobre a situação atual no recorte de ${geo}. Mencione a empresa pelo nome.",
-  "perguntasSimuladas": "Para cada uma das 4 perguntas, descreva o que a IA responderia e se ${empresa} aparece ou não.",
+  "perguntasSimuladas": "Texto corrido descrevendo o que a IA responderia para cada uma das 4 perguntas simuladas e se ${empresa} aparece ou não. Máximo 4 parágrafos, um por pergunta.",
   "quemDomina": "Quem domina esse segmento na IA no recorte de ${geo}. Perfil de empresa, tipo de conteúdo.",
   "gaps": "3-4 lacunas específicas onde ${empresa} deveria aparecer em ${geo} mas não aparece.",
   "proximosPassos": [
