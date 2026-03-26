@@ -68,7 +68,7 @@ Responda APENAS com JSON válido, sem texto antes ou depois, sem blocos de códi
   ]
 }`;
 
-  try {
+ try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -84,6 +84,8 @@ Responda APENAS com JSON válido, sem texto antes ou depois, sem blocos de códi
     });
 
     const data = await response.json();
+    console.log('API response:', JSON.stringify(data));
+
     const raw = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('').trim();
     const clean = raw.replace(/```json|```/g, '').trim();
     const jsonMatch = clean.match(/\{[\s\S]*\}/);
@@ -91,6 +93,7 @@ Responda APENAS com JSON válido, sem texto antes ou depois, sem blocos de códi
     const result = JSON.parse(jsonMatch[0]);
     return res.status(200).json({ ...result, geo });
   } catch (e) {
-    return res.status(500).json({ error: 'Erro na análise. Tente novamente.' });
+    console.log('Erro:', e.message);
+    return res.status(500).json({ error: e.message });
   }
 }
