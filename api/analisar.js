@@ -3,7 +3,6 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Método não permitido' });
 
@@ -25,9 +24,11 @@ export default async function handler(req, res) {
     nacional: 'todo o Brasil'
   }[abrangencia] || `a cidade de ${cidade}`;
 
-  const prompt = `Você é um especialista em GEO (Generative Engine Optimization) e visibilidade de marcas em IAs generativas como ChatGPT, Gemini e Perplexity.
+  const prompt = `Você é um especialista em GEO (Generative Engine Optimization) e visibilidade de marcas em IAs generativas.
 
-Analise a presença em IA da seguinte empresa:
+Sua tarefa é fazer uma análise REAL e BASEADA EM EVIDÊNCIAS da presença digital da empresa abaixo.
+
+DADOS DA EMPRESA:
 - Nome: ${empresa}
 - Site: ${site || 'não informado'}
 - Segmento: ${segmento}
@@ -35,41 +36,59 @@ Analise a presença em IA da seguinte empresa:
 - Concorrentes: ${concorrentes || 'não informados'}
 - Observações: ${obs || 'nenhuma'}
 
-IMPORTANTE: Esta empresa atua em ${abrangenciaTexto}. As perguntas simuladas DEVEM incluir o recorte geográfico correto.
+INSTRUÇÕES:
+1. Use web search para buscar informações REAIS sobre esta empresa. Faça as seguintes buscas:
+   - "${empresa} ${cidade}" — presença geral
+   - "${empresa} site:reclameaqui.com.br" — reputação
+   - "${empresa} avaliação OR review OR reclamação" — o que clientes dizem
+   - "melhores empresas ${segmento} ${geo}" — quem aparece no lugar dela
+   - "${empresa} ${segmento}" — autoridade no segmento
 
-Simule como uma IA generativa responderia a estas 4 perguntas:
-1. "Melhores empresas de ${segmento} em ${geo}"
-2. "Como escolher empresa de ${segmento} em ${geo}"
-3. "Vale a pena contratar ${segmento} em ${geo}"
-4. "Quanto custa ${segmento} em ${geo}"
+2. Com base no que ENCONTROU de verdade (não simule), avalie:
+   - A empresa tem site ativo e bem estruturado?
+   - Aparece em diretórios, portais, notícias locais?
+   - Tem avaliações em plataformas públicas?
+   - Produz conteúdo relevante para o segmento?
+   - Concorrentes aparecem mais do que ela nas buscas?
 
-Para cada pergunta, diga se ${empresa} aparece com PRESENÇA DIRETA, PRESENÇA INDIRETA ou AUSÊNCIA TOTAL.
+3. Avalie nas 3 dimensões (0-100) com base nas evidências encontradas:
+   - Autoridade (peso 40%):
+     * 0-20 = sem presença digital verificável
+     * 21-40 = presença mínima (só site institucional básico)
+     * 41-60 = presença moderada (site + algumas menções)
+     * 61-80 = boa presença (conteúdo, avaliações, menções frequentes)
+     * 81-100 = referência do segmento (citada em múltiplas fontes relevantes)
+   - Cobertura (peso 30%):
+     * 0-20 = ausente em buscas do segmento
+     * 21-50 = aparece em 1 tipo de busca
+     * 51-75 = aparece em 2-3 tipos de busca
+     * 76-100 = presente em todos os tipos de busca relevantes
+   - Posicionamento (peso 30%):
+     * 0-30 = não identificável como referência no segmento
+     * 31-60 = existe mas não se diferencia
+     * 61-80 = alguma diferenciação percebida
+     * 81-100 = posicionamento claro e diferenciado
 
-Avalie nas 3 dimensões (0-100):
-- Autoridade: se aparece ou não nas respostas
-- Cobertura: em quantos tipos de pergunta aparece
-- Posicionamento: como a IA descreve o mercado local
-
-Score Papa de Autoridade em IA = média ponderada (0-100).
+4. Score Papa = (autoridade * 0.4) + (cobertura * 0.3) + (posicionamento * 0.3)
 
 Responda APENAS com JSON válido, sem texto antes ou depois, sem blocos de código:
 {
-  "score": 18,
-  "scoreLabel": "frase curta sobre o nível de presença",
-  "scoreSub": "frase de impacto sobre o que isso significa",
-  "dimensoes": { "autoridade": 12, "cobertura": 15, "posicionamento": 28 },
-  "diagnostico": "2-3 frases diretas sobre a situação atual no recorte de ${geo}. Mencione a empresa pelo nome.",
-  "perguntasSimuladas": "Texto corrido descrevendo o que a IA responderia para cada uma das 4 perguntas simuladas e se ${empresa} aparece ou não. Máximo 4 parágrafos, um por pergunta.",
-  "quemDomina": "Quem domina esse segmento na IA no recorte de ${geo}. Perfil de empresa, tipo de conteúdo.",
-  "gaps": "3-4 lacunas específicas onde ${empresa} deveria aparecer em ${geo} mas não aparece.",
+  "score": 35,
+  "scoreLabel": "frase curta descrevendo o nível real de presença encontrado",
+  "scoreSub": "frase de impacto baseada no que foi encontrado nas buscas",
+  "dimensoes": { "autoridade": 30, "cobertura": 35, "posicionamento": 40 },
+  "diagnostico": "2-3 frases baseadas no que foi encontrado de verdade nas buscas. Mencione evidências reais. Mencione a empresa pelo nome e o recorte de ${geo}.",
+  "perguntasSimuladas": "Com base nas buscas realizadas, descreva em texto corrido o que uma IA generativa responderia sobre ${segmento} em ${geo} e se ${empresa} apareceria ou não. Máximo 4 parágrafos.",
+  "quemDomina": "Com base nas buscas, quem realmente aparece quando se busca ${segmento} em ${geo}. Seja específico sobre o que foi encontrado.",
+  "gaps": "3-4 lacunas concretas identificadas nas buscas — o que está faltando na presença digital de ${empresa}.",
   "proximosPassos": [
-    {"titulo": "título da ação", "descricao": "descrição curta e concreta"},
-    {"titulo": "título da ação", "descricao": "descrição curta e concreta"},
-    {"titulo": "título da ação", "descricao": "descrição curta e concreta"}
+    {"titulo": "título da ação", "descricao": "ação concreta baseada nas lacunas encontradas"},
+    {"titulo": "título da ação", "descricao": "ação concreta baseada nas lacunas encontradas"},
+    {"titulo": "título da ação", "descricao": "ação concreta baseada nas lacunas encontradas"}
   ]
 }`;
 
- try {
+  try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -78,23 +97,33 @@ Responda APENAS com JSON válido, sem texto antes ou depois, sem blocos de códi
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-       model: 'claude-haiku-4-5',
+        model: 'claude-haiku-4-5',
         max_tokens: 3000,
+        tools: [{
+          type: 'web_search_20250305',
+          name: 'web_search',
+          max_uses: 5
+        }],
         messages: [{ role: 'user', content: prompt }]
       })
     });
 
     const data = await response.json();
-    console.log('API response:', JSON.stringify(data));
+    console.log('Status API:', response.status);
 
-    const raw = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('').trim();
-    const clean = raw.replace(/```json|```/g, '').trim();
+    const textBlocks = (data.content || [])
+      .filter(b => b.type === 'text')
+      .map(b => b.text)
+      .join('')
+      .trim();
+
+    const clean = textBlocks.replace(/```json|```/g, '').trim();
     const jsonMatch = clean.match(/\{[\s\S]*\}/);
     if (!jsonMatch) throw new Error('JSON inválido');
     const result = JSON.parse(jsonMatch[0]);
     return res.status(200).json({ ...result, geo });
   } catch (e) {
     console.log('Erro:', e.message);
-    return res.status(500).json({ error: e.message });
+    return res.status(500).json({ error: 'Erro na análise. Tente novamente.' });
   }
 }
