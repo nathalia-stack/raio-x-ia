@@ -99,6 +99,7 @@ Responda APENAS com JSON válido, sem texto antes ou depois, sem blocos de códi
       body: JSON.stringify({
         model: 'claude-haiku-4-5',
         max_tokens: 3000,
+        temperature: 0,
         tools: [{
           type: 'web_search_20250305',
           name: 'web_search',
