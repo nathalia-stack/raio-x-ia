@@ -25,14 +25,12 @@
     }
 
     .logo {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #888;
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 1.5rem;
     }
 
     h1 {
@@ -286,8 +284,7 @@
 <div class="container">
 
   <div class="header">
-<img src="https://cdn.jsdelivr.net/gh/nathalia-stack/raio-x-ia@main/Logo_Papa_Cadeado.png" alt="Papa PPG" style="height: 40px; margin-bottom: 1.5rem; display: block;" />
-    
+    <div class="logo">Papa PPG</div>
     <h1>Se um cliente perguntasse pra IA quem contratar no seu mercado… sua empresa apareceria?</h1>
     <p class="subtitle">Diagnóstico de visibilidade em IAs generativas como ChatGPT, Gemini e Perplexity — com score, análise e plano de ação.</p>
   </div>
@@ -296,24 +293,24 @@
   <div class="card step active" id="step-form">
     <div class="field">
       <label>Nome da empresa</label>
-      <input type="text" id="empresa" placeholder="Ex: O Boticário" />
+      <input type="text" id="empresa" placeholder="Ex: Protector" />
     </div>
     <div class="field">
       <label>Site <span class="opt">(opcional)</span></label>
-      <input type="text" id="site" placeholder="Ex: boticario.com.br" />
+      <input type="text" id="site" placeholder="Ex: protector-rs.com.br" />
     </div>
     <div class="field">
       <label>Segmento / mercado de atuação</label>
-      <input type="text" id="segmento" placeholder="Ex: cosméticos e perfumaria" />
+      <input type="text" id="segmento" placeholder="Ex: serviços de segurança" />
     </div>
     <div class="field-row">
       <div class="field">
         <label>Cidade de atuação</label>
-        <input type="text" id="cidade" placeholder="Ex: São Paulo" />
+        <input type="text" id="cidade" placeholder="Ex: Novo Hamburgo" />
       </div>
       <div class="field">
         <label>Estado <span class="opt">(opcional)</span></label>
-        <input type="text" id="estado" placeholder="Ex: SP" />
+        <input type="text" id="estado" placeholder="Ex: RS" />
       </div>
     </div>
     <div class="field">
@@ -327,11 +324,11 @@
     </div>
     <div class="field">
       <label>Principais concorrentes <span class="opt">(opcional)</span></label>
-      <input type="text" id="concorrentes" placeholder="Ex: principais concorrentes do seu segmento" />
+      <input type="text" id="concorrentes" placeholder="Ex: STV, Orsegups, Central de Alarmes" />
     </div>
     <div class="field">
       <label>Observação adicional <span class="opt">(opcional)</span></label>
-      <textarea id="obs" placeholder="Ex: atendemos PMEs, somos referência regional, temos 20 anos de mercado..."></textarea>
+      <textarea id="obs" placeholder="Ex: foco em condomínios e empresas, 20 anos de mercado..."></textarea>
     </div>
     <button class="btn btn-primary" onclick="startAnalysis()">Analisar presença na IA →</button>
     <p class="error-msg" id="form-error">Preencha pelo menos nome da empresa, segmento e cidade.</p>
@@ -402,7 +399,7 @@
 
       <div class="cta-area">
         <button class="btn-cta btn-cta-secondary" onclick="restart()">Nova análise</button>
-        <button class="btn-cta btn-cta-primary" onclick="window.location.href='mailto:contato@papa.ppg.com.br?subject=Quero um plano de ação completo'">Quero um plano de ação →</button>
+        <button class="btn-cta btn-cta-primary" onclick="window.location.href='mailto:contato@papappg.com.br?subject=Quero um plano de ação completo'">Quero um plano de ação →</button>
       </div>
     </div>
   </div>
@@ -486,8 +483,7 @@ function renderResult(r) {
   });
 
   document.getElementById('txt-diagnostico').textContent = r.diagnostico || '';
-  const p = r.perguntasSimuladas;
-document.getElementById('txt-perguntas').textContent = typeof p === 'string' ? p : JSON.stringify(p) || '';
+  document.getElementById('txt-perguntas').textContent = r.perguntasSimuladas || '';
   document.getElementById('txt-dominando').textContent = r.quemDomina || '';
   document.getElementById('txt-gaps').textContent = r.gaps || '';
 
